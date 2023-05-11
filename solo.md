@@ -3,6 +3,13 @@
 ## Users login through discord ID
 Data gets send by both users to verify who wins. Needs some thinking on how to implement this exactly.
 
+Potential system to prevent cheating/code injection:
+
+Client breadcrumb log.
+Each client sends data every x seconds. For big discrepencies at the end this breadcrumb log can be checked to verify whether the solo game is valid or not?
+
+Perhaps add automatic flagging for "suspicious" games
+
 ## points and leaderboard
 Discord users need to be verified if they are accounts < x weeks old/on the server.
 This prevents multi accounting.
