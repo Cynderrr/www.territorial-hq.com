@@ -1,0 +1,55 @@
+﻿@page
+@model TerritorialHQ.Areas.Administration.Pages.Clans.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Clan</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Clan.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clan.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Clan.GuildId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clan.GuildId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Clan.LogoFile)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clan.LogoFile)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Clan.BannerFile)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clan.BannerFile)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Clan.DiscordLink)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clan.DiscordLink)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Clan.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Clan.Description)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Clan.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

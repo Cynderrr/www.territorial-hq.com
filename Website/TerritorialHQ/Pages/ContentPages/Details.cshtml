@@ -1,0 +1,29 @@
+﻿@page
+@model TerritorialHQ.Pages.ContentPages.DetailsModel
+@{
+}
+
+
+<div>
+    <a href="/">Home</a>
+    @if (@Model.NavEntry.Parent != null)
+    {
+        <span>> @Model.NavEntry.Parent.Name</span>
+    }
+    <span>></span>
+    <a href="/@Model.NavEntry.Slug">@Model.NavEntry.Name</a>
+</div>
+
+@if (Model.ContentPage == null)
+{
+    <partial name="_NoContent" />
+}
+else
+{
+    @if (!string.IsNullOrEmpty(Model.ContentPage.BannerImage))
+    {
+        <img src="/Data/Uploads/System/@Model.ContentPage.BannerImage" style="width: 100%" />
+    }
+
+    @Html.Raw(Model.ContentPage.Content)
+}
