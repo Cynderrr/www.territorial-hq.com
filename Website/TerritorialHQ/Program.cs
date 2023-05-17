@@ -51,6 +51,8 @@ namespace TerritorialHQ
             builder.Services.AddScoped(typeof(NavigationEntryService));
             builder.Services.AddScoped(typeof(ContentPageService));
 
+            builder.Services.AddMemoryCache();
+
             // Add controller mapping functions
             var mapperConfig = new AutoMapper.MapperConfiguration(cfg =>
             {
@@ -74,7 +76,7 @@ namespace TerritorialHQ
             });
 
             var app = builder.Build();
-
+            
             // Migrate the database if there are pending updates that have not yet been applied
             DbMigrationService.MigrationInitialization(app);
 
