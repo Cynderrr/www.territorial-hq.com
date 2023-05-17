@@ -32,6 +32,9 @@
     <Folder Include="wwwroot\Data\Logs\" />
     <Folder Include="wwwroot\Data\" />
     <Folder Include="wwwroot\Data\Uploads\" />
+    <Folder Include="wwwroot\dist\" />
+    <Folder Include="wwwroot\Logs\" />
+    <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>
 
 </Project>

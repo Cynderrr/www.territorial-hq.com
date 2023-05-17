@@ -3,27 +3,27 @@
 @{
 }
 
+@if (!string.IsNullOrEmpty(Model.ContentPage.BannerImage))
+{
+    <div style="background-image: url(/Data/Uploads/System/@Model.ContentPage.BannerImage)"></div>
+}
 
-<div>
-    <a href="/">Home</a>
+<ul>
+    <li><a href="/">Home</a></li>
     @if (@Model.NavEntry.Parent != null)
     {
-        <span>> @Model.NavEntry.Parent.Name</span>
+        <li>@Model.NavEntry.Parent.Name</li>
     }
-    <span>></span>
-    <a href="/@Model.NavEntry.Slug">@Model.NavEntry.Name</a>
-</div>
+    <li><a href="/@Model.NavEntry.Slug">@Model.NavEntry.Name</a></li>
+</ul>
 
-@if (Model.ContentPage == null)
-{
-    <partial name="_NoContent" />
-}
-else
-{
-    @if (!string.IsNullOrEmpty(Model.ContentPage.BannerImage))
+<div>
+    @if (Model.ContentPage == null)
     {
-        <img src="/Data/Uploads/System/@Model.ContentPage.BannerImage" style="width: 100%" />
+        <partial name="_NoContent" />
     }
-
-    @Html.Raw(Model.ContentPage.Content)
-}
+    else
+    {
+        @Html.Raw(Model.ContentPage.Content)
+    }
+</div>

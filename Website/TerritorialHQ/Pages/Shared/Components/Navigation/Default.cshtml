@@ -55,8 +55,9 @@
     }
     @if (User.IsInRole("Administrator") || User.IsInRole("Staff"))
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Administration" asp-page="/Home/Index">Administration</a>
+        <li>
+            <a asp-area="Administration" asp-page="/Home/Index">Administration</a>
         </li>
     }
 </ul>
+<partial name="_LoginPartial" />
