@@ -5,101 +5,100 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Navigation</h1>
-
-<h2>Index</h2>
+<h1 class="text-4xl mb-5">Navigation</h1>
 
 <p>
-    <a asp-page="Create" class="btn btn-secondary">Create</a>
+    <a asp-page="Create" class="btn-admin-primary">Create</a>
 </p>
 
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Entry</th>
-            <th>Link</th>
-            <th style="width: 1%;">Public</th>
-            <th style="width: 1%;">Order</th>
-            <th style="width: 1%;"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.NavigationEntries)
-        {
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="admin-table">
+        <thead>
             <tr>
-                <td>@Html.DisplayFor(model => item.Name)</td>
-                <td>
-                    @if (item.ContentPageId != null)
-                    {
-                        @Html.DisplayFor(model => item.ContentPage.DisplayName) <span>(Content Page)</span>
-                    }
-                    else if (item.ExternalUrl != null)
-                    {
-                        @Html.DisplayFor(model => item.ExternalUrl)
-                    }
-                    else
-                    {
-                        <span>(Not linked)</span>
-                    }
-                </td>
-                <td>@Html.DisplayFor(model => item.Public)</td>
-                <td>@Html.DisplayFor(model => item.Order)</td>
-                <td style="white-space: nowrap">
-                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-secondary">Edit</a>
-                    @if (item.SubEntries == null || item.SubEntries.Count == 0)
-                    {
-                        <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
-                    }
-                </td>
+                <th>Entry</th>
+                <th>Link</th>
+                <th style="width: 1%;">Public</th>
+                <th style="width: 1%;">Order</th>
+                <th style="width: 1%;"></th>
             </tr>
-            <tr>
-                <td colspan="5">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Entry</th>
-                                <th>Link</th>
-                                <th style="width: 1%;">Public</th>
-                                <th style="width: 1%;">Order</th>
-                                <th style="width: 1%;"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (item.SubEntries != null)
-                            {
-                                @foreach (var subitem in item.SubEntries.OrderBy(o => o.Order))
+        </thead>
+        <tbody>
+            @foreach (var item in Model.NavigationEntries)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => item.Name)</td>
+                    <td>
+                        @if (item.ContentPageId != null)
+                        {
+                            @Html.DisplayFor(model => item.ContentPage.DisplayName) <span>(Content Page)</span>
+                        }
+                        else if (item.ExternalUrl != null)
+                        {
+                            @Html.DisplayFor(model => item.ExternalUrl)
+                        }
+                        else
+                        {
+                            <span>(Not linked)</span>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(model => item.Public)</td>
+                    <td>@Html.DisplayFor(model => item.Order)</td>
+                    <td style="white-space: nowrap">
+                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-secondary">Edit</a>
+                        @if (item.SubEntries == null || item.SubEntries.Count == 0)
+                        {
+                            <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Entry</th>
+                                    <th>Link</th>
+                                    <th style="width: 1%;">Public</th>
+                                    <th style="width: 1%;">Order</th>
+                                    <th style="width: 1%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (item.SubEntries != null)
                                 {
-                                    <tr>
-                                        <td>@Html.DisplayFor(model => subitem.Name)</td>
-                                        <td>
-                                            @if (subitem.ContentPageId != null)
-                                            {
-                                                @Html.DisplayFor(model => subitem.ContentPage.DisplayName)  <span>(Content Page)</span>
-                                            }
-                                            else if (subitem.ExternalUrl != null)
-                                            {
-                                                @Html.DisplayFor(model => subitem.ExternalUrl) 
-                                            }
-                                            else
-                                            {
-                                                <span>(Not linked)</span>
-                                            }
-                                        </td>
-                                        <td>@Html.DisplayFor(model => subitem.Public)</td>
-                                        <td>@Html.DisplayFor(model => subitem.Order)</td>
-                                        <td style="white-space: nowrap">
-                                            <a asp-page="./Edit" asp-route-id="@subitem.Id" class="btn btn-sm btn-secondary">Edit</a>
-                                            <a asp-page="./Delete" asp-route-id="@subitem.Id" class="btn btn-sm btn-danger">Delete</a>
-                                        </td>
-                                    </tr>
+                                    @foreach (var subitem in item.SubEntries.OrderBy(o => o.Order))
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(model => subitem.Name)</td>
+                                            <td>
+                                                @if (subitem.ContentPageId != null)
+                                                {
+                                                    @Html.DisplayFor(model => subitem.ContentPage.DisplayName)  <span>(Content Page)</span>
+                                                }
+                                                else if (subitem.ExternalUrl != null)
+                                                {
+                                                    @Html.DisplayFor(model => subitem.ExternalUrl)
+                                                }
+                                                else
+                                                {
+                                                    <span>(Not linked)</span>
+                                                }
+                                            </td>
+                                            <td>@Html.DisplayFor(model => subitem.Public)</td>
+                                            <td>@Html.DisplayFor(model => subitem.Order)</td>
+                                            <td style="white-space: nowrap">
+                                                <a asp-page="./Edit" asp-route-id="@subitem.Id" class="btn btn-sm btn-secondary">Edit</a>
+                                                <a asp-page="./Delete" asp-route-id="@subitem.Id" class="btn btn-sm btn-danger">Delete</a>
+                                            </td>
+                                        </tr>
+                                    }
                                 }
-                            }
-                        </tbody>
-                    </table>
-                    <a asp-page="Create" asp-route-parentId="@item.Id" class="btn btn-secondary btn-sm">Create Subentry</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                            </tbody>
+                        </table>
+                        <a asp-page="Create" asp-route-parentId="@item.Id" class="btn btn-secondary btn-sm">Create Subentry</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -3,11 +3,10 @@ module.exports = {
     content: [
         "./Pages/**/*.{html,js,cshtml}",
         "./Areas/**/*.{html,js,cshtml}",
-        "./wwwroot/js/**/*.{js}"
+        "./wwwroot/js/**/*.js"
     ],
     theme: {
         extend: {},
     },
     plugins: [],
 }
-

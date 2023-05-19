@@ -73,7 +73,8 @@ namespace TerritorialHQ
             builder.Services.AddRazorPages(options =>
             {
                 options.Conventions.AddPageRoute("/ContentPages/Details", "{*url}");
-            });
+            })
+            .AddRazorRuntimeCompilation();
 
             var app = builder.Build();
             

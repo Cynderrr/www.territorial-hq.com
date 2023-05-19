@@ -10,33 +10,43 @@
 @foreach (var keyVauePair in Model.UsersWithRoles)
 {
     <h3>@keyVauePair.Key</h3>
-    <table class="table table-bordered">
-        @if (keyVauePair.Value.Count == 0)
-        {
-            <tr>
-                <td>
-                    <em>No users in this role.</em>
-                </td>
-            </tr>
-        }
-        else
-        {
-            foreach (var item in keyVauePair.Value)
-            {
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="admin-table">
+            <thead>
                 <tr>
-                    <td>
-                        <img style="width: 24px; height: 24px; border-radius: 12px" class="avatar avatar-@(item.UserName) discord-loader" src="~/img/loading_symbol.gif" data-id="@(item.UserName)" />
-                        <span class="name-@(item.UserName)">@item.UserName</span>
-                    </td>
-                    <td style="width: 1%; white-space: nowrap">
-                        <form asp-page="./Remove" asp-route-id="@item.Id" method="post">
-                            <button type="submit" class="btn btn-sm btn-secondary" onclick="return confirm('Remove user from role? The user will be signed out automatically.')">Remove</button>
-                        </form>
-                    </td>
+                    <th>User</th>
+                    <th></th>
                 </tr>
-            }
-        }
-    </table>
+            </thead>
+            <tbody>
+                @if (keyVauePair.Value.Count == 0)
+                {
+                    <tr>
+                        <td>
+                            <em>No users in this role.</em>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in keyVauePair.Value)
+                    {
+                        <tr>
+                            <td>
+                                <img style="width: 24px; height: 24px; border-radius: 12px" class="inline avatar avatar-@(item.UserName) discord-loader" src="~/img/loading_symbol.gif" data-id="@(item.UserName)" />
+                                <span class="name-@(item.UserName)">@item.UserName</span>
+                            </td>
+                            <td style="width: 1%; white-space: nowrap">
+                                <form asp-page="./Remove" asp-route-id="@item.Id" method="post">
+                                    <button type="submit" class="btn btn-sm btn-secondary" onclick="return confirm('Remove user from role? The user will be signed out automatically.')">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
 <h2>Add user to backend</h2>
@@ -54,16 +64,26 @@
 @if (Model.QueryResult != null)
 {
     <h3>Search Result</h3>
-    <table class="table table-bordered">
-        <tr>
-            <td>
-                <img style="width: 24px; height: 24px; border-radius: 12px" class="avatar avatar-@(Model.QueryResult.UserName) discord-loader" src="~/img/loading_symbol.gif" data-id="@(Model.QueryResult.UserName)" />
-                <span class="name-@(Model.QueryResult.UserName)">@Model.QueryResult.UserName</span>
-            </td>
-            <td style="width: 1%; white-space: nowrap">
-                <a class="btn btn-sm btn-secondary" asp-page="./Edit" asp-route-id="@Model.QueryResult.Id">Edit role</a>
-            </td>
-        </tr>
-    </table>
+    <div>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <img style="width: 24px; height: 24px; border-radius: 12px" class="inline avatar avatar-@(Model.QueryResult.UserName) discord-loader" src="~/img/loading_symbol.gif" data-id="@(Model.QueryResult.UserName)" />
+                        <span class="name-@(Model.QueryResult.UserName)">@Model.QueryResult.UserName</span>
+                    </td>
+                    <td style="width: 1%; white-space: nowrap">
+                        <a class="btn btn-sm btn-secondary" asp-page="./Edit" asp-route-id="@Model.QueryResult.Id">Edit role</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 }
 
