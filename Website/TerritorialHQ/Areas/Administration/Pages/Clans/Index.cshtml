@@ -5,12 +5,20 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Clans</h1>
+<h1 class="text-4xl mb-5">Clans</h1>
 
-<h2>Index</h2>
-<p>
-    <a asp-page="Create">Create</a>
-</p>
+@if (User.IsInRole("Administrator"))
+{
+    <p>
+        <a asp-page="Create" class="btn-admin-primary mb-6">
+            <svg class="inline-block w-6 h-6" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Create new Clan
+        </a>
+    </p>
+}
+
 <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="admin-table">
         <thead class="">
@@ -39,6 +47,9 @@
         <tbody>
             @foreach (var item in Model.Clan)
             {
+                if (!item.ClanUserRelations.Any(r => r.User.UserName == User.Identity.Name))
+                    continue;
+
                 <tr class="">
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
@@ -65,9 +76,12 @@
                         @Html.DisplayFor(modelItem => item.Description)
                     </td>
                     <td style="width: 1%; white-space: nowrap">
-                        <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
-                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
-                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        <a class="btn-admin-secondary-sm" asp-page="./Details" asp-route-id="@item.Id">Details</a>
+                        <a class="btn-admin-secondary-sm" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <a class="btn-admin-danger-sm" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        }
                     </td>
                 </tr>
             }

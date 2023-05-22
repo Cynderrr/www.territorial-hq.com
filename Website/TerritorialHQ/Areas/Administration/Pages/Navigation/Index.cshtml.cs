@@ -6,7 +6,7 @@ using TerritorialHQ.Services;
 
 namespace TerritorialHQ.Areas.Administration.Pages.Navigation
 {
-    [Authorize(Roles = "Administrator, Staff")]
+    [Authorize(Roles = "Administrator")]
     public class IndexModel : PageModel
     {
         private readonly IMapper _mapper;

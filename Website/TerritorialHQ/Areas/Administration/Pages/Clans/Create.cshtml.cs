@@ -9,7 +9,7 @@ using TerritorialHQ.Services;
 
 namespace TerritorialHQ.Areas.Administration.Pages.Clans
 {
-    [Authorize(Roles = "Administrator, Staff")]
+    [Authorize(Roles = "Administrator")]
     public class CreateModel : PageModel
     {
         private readonly IMapper _mapper;

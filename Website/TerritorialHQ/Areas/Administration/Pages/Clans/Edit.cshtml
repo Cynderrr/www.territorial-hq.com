@@ -5,49 +5,155 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Clan</h1>
+<h1 class="text-4xl mb-5">Clans</h1>
+<h2 class="text-2xl mb-5">Edit</h2>
 
-<h2>Edit</h2>
-<form method="post" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Id" />
-    <input type="hidden" asp-for="LogoFile" />
-    <input type="hidden" asp-for="BannerFile" />
-    <div class="form-group">
-        <label asp-for="Name" class="control-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="GuildId" class="control-label"></label>
-        <input asp-for="GuildId" class="form-control" />
-        <span asp-validation-for="GuildId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="LogoFile" class="control-label"></label><br />
-        <input type="file" name="fileLogo" accept=".jpg,.jpeg,.gif,.png" /><br />
-        <label><input type="checkbox" asp-for="RemoveLogo" /> Remove logo image on save</label>
-    </div>
-    <div class="form-group">
-        <label asp-for="BannerFile" class="control-label"></label><br />
-        <input type="file" name="fileBanner" accept=".jpg,.jpeg,.gif,.png" /><br />
-        <label><input type="checkbox" asp-for="RemoveBanner" /> Remove banner image on save</label>
-    </div>
-    <div class="form-group">
-        <label asp-for="DiscordLink" class="control-label"></label>
-        <input asp-for="DiscordLink" class="form-control" />
-        <span asp-validation-for="DiscordLink" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Description" class="control-label"></label>
-        <textarea asp-for="Description" class="form-control" rows="12"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Save</button>
-    </div>
-</form>
+<div class="flex flex-row">
+    <div class="grow">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="LogoFile" />
+            <input type="hidden" asp-for="BannerFile" />
 
+            @if (User.IsInRole("Administrator"))
+            {
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="GuildId" class="control-label"></label>
+                    <input asp-for="GuildId" class="form-control" />
+                <span asp-validation-for="GuildId" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" disabled />
+                    <input type="hidden" asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="GuildId" class="control-label"></label>
+                    <input asp-for="GuildId" class="form-control" disabled />
+                    <input type="hidden" asp-for="GuildId" class="form-control" />
+                    <span asp-validation-for="GuildId" class="text-danger"></span>
+                </div>
+            }
+
+            <div class="flex flex-row">
+                <div class="basis-1/2 form-group">
+                    <label asp-for="LogoFile" class="control-label"></label>
+                    @if (!string.IsNullOrEmpty(Model.LogoFile))
+                    {
+                        <img src="/Data/Uploads/System/@Model.LogoFile" style="max-height: 150px" class="block mb-2" />
+                    }
+                    <input type="file" name="fileLogo" accept=".jpg,.jpeg,.gif,.png" />
+                    <label class="block mt-2"><input type="checkbox" asp-for="RemoveLogo" /> Remove logo image on save</label>
+                </div>
+                <div class="basis-1/2  form-group">
+                    <label asp-for="BannerFile" class="control-label"></label>
+                    @if (!string.IsNullOrEmpty(Model.BannerFile))
+                    {
+                        <img src="/Data/Uploads/System/@Model.BannerFile" style="max-height: 150px" class="block mb-2" />
+                    }
+                    <input type="file" name="fileBanner" accept=".jpg,.jpeg,.gif,.png" />
+                    <label class="block mt-2"><input type="checkbox" asp-for="RemoveBanner" /> Remove banner image on save</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DiscordLink" class="control-label"></label>
+                <input asp-for="DiscordLink" class="form-control" />
+                <span asp-validation-for="DiscordLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="12"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn-admin-primary">Save</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="basis-1/4">
+        <div class="ml-6 pl-6 border-l-2 border-l-gray-200">
+            @if (User.IsInRole("Administrator"))
+            {
+                <h3 class="text-xl mb-3">Edit Permissions</h3>
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.UserRelations.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="2">
+                                        <em>No staff users have permissions to edit</em>
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.UserRelations)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img style="width: 24px; height: 24px; border-radius: 12px" class="inline avatar avatar-@(item.User.UserName) discord-loader" src="~/img/loading_symbol.gif" data-id="@(item.User.UserName)" />
+                                            <span class="name-@(item.User.UserName)">@item.User.UserName</span>
+                                        </td>
+                                        <td style="width: 1%">
+                                            <form method="post" asp-page-handler="RemoveUser">
+                                                <input type="hidden" name="id" value="@Model.Id" />
+                                                <input type="hidden" name="userId" value="@item.UserId" />
+                                                <button type="submit" class="btn-admin-danger-sm">Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="mt-3">
+                    <form method="post" asp-page-handler="AddUser">
+                        <div class="form-group">
+                            <label class="control-label">Give edit permission to user</label>
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <select class="form-control" name="userId" asp-items="@ViewBag.UserId">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <button class="btn-admin-secondary-sm" type="submit">Add user</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="p-3 bg-gray-100 rounded text-sm">
+                    <p class="font-bold mb-3">Important information</p>
+                    <p class="mb-3">Changes to this page are automatically logged, including the previous content, the new content and which user did the edit.</p>
+                    <p class="mb-3">Texts or image uploads that violate the community standards (e.g. explicit content, hate speech, or content 
+                        that infringes on intellectual property or other rights) will be removed.</p>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
 
 <div>
     <a asp-page="Index">Back to list</a>

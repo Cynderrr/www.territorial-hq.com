@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using TerritorialHQ.Services;
 
 namespace TerritorialHQ.Areas.Administration.Pages.ContentPages
 {
+    [Authorize(Roles = "Administrator")]
     public class EditModel : PageModel
     {
 

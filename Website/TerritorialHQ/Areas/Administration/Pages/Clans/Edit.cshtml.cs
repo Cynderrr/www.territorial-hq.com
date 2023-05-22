@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 using System.ComponentModel.DataAnnotations;
 using TerritorialHQ.Helpers;
+using TerritorialHQ.Models;
 using TerritorialHQ.Services;
 
 namespace TerritorialHQ.Areas.Administration.Pages.Clans
@@ -18,13 +23,15 @@ namespace TerritorialHQ.Areas.Administration.Pages.Clans
         private readonly LoggerService _logger;
         private readonly ClanService _service;
         private readonly IWebHostEnvironment _env;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public EditModel(IMapper mapper, LoggerService logger, ClanService service, IWebHostEnvironment env)
+        public EditModel(IMapper mapper, LoggerService logger, ClanService service, IWebHostEnvironment env, UserManager<IdentityUser> userManager)
         {
             _mapper = mapper;
             _logger = logger;
             _service = service;
             _env = env;
+            _userManager = userManager;
         }
 
 
@@ -56,6 +63,9 @@ namespace TerritorialHQ.Areas.Administration.Pages.Clans
         [BindProperty]
         public bool RemoveBanner { get; set; }
 
+        public List<ClanUserRelation> UserRelations { get; set; }
+
+
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -69,21 +79,39 @@ namespace TerritorialHQ.Areas.Administration.Pages.Clans
                 return NotFound();
             }
 
+            if (!User.IsInRole("Administrator") && !item.ClanUserRelations.Any(r => r.User.UserName == User.Identity.Name))
+                return Forbid();
+            
             _mapper.Map(item, this);
+
+            UserRelations = item.ClanUserRelations ?? new List<ClanUserRelation>();
+
+            var staffUsers = await _userManager.GetUsersInRoleAsync("Staff");
+            staffUsers = staffUsers.Except(UserRelations.Select(s => s.User)).ToList();
+
+            ViewData["UserId"] = new SelectList(staffUsers, "Id", "UserName");
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(IFormFile? fileLogo, IFormFile? fileBanner)
         {
+            var item = await _service.FindAsync(this.Id);
+
             if (!ModelState.IsValid)
             {
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                UserRelations = item.ClanUserRelations;
 
                 return Page();
             }
 
-            var item = await _service.FindAsync(this.Id);
+            if (!User.IsInRole("Administrator"))
+            {
+                this.Name = item.Name;
+                this.GuildId = item.GuildId;
+            }
+
             _mapper.Map(this, item);
 
             if (fileLogo != null)
@@ -135,6 +163,56 @@ namespace TerritorialHQ.Areas.Administration.Pages.Clans
 
             return RedirectToPage("./Index");
         }
+
+        public async Task<IActionResult> OnPostAddUser(string id, string userId)
+        {
+            var item = await _service.FindAsync(id);
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                if (!item.ClanUserRelations.Any(r => r.UserId == user.Id))
+                {
+                    item.ClanUserRelations.Add(new ClanUserRelation() { UserId = user.Id });
+                    _service.Update(item);
+
+                    await _service.SaveChangesAsync(User);
+                }
+            }
+
+            UserRelations = item.ClanUserRelations ?? new List<ClanUserRelation>();
+
+            var staffUsers = await _userManager.GetUsersInRoleAsync("Staff");
+            staffUsers = staffUsers.Except(UserRelations.Select(s => s.User)).ToList();
+
+            _mapper.Map(item, this);
+
+            ViewData["UserId"] = new SelectList(staffUsers, "Id", "UserName");
+
+            return Page();
+        }
+
+
+        public async Task<IActionResult> OnPostRemoveUser(string id, string userId)
+        {
+            var item = await _service.FindAsync(id);
+
+            item.ClanUserRelations.RemoveAll(r => r.UserId == userId);
+            _service.Update(item);
+            await _service.SaveChangesAsync(User);
+
+            UserRelations = item.ClanUserRelations ?? new List<ClanUserRelation>();
+
+            var staffUsers = await _userManager.GetUsersInRoleAsync("Staff");
+            staffUsers = staffUsers.Except(UserRelations.Select(s => s.User)).ToList();
+
+            _mapper.Map(item, this);
+
+            ViewData["UserId"] = new SelectList(staffUsers, "Id", "UserName");
+
+            return Page();
+        }
+
 
         private async Task<bool> ClanExists(string id)
         {
