@@ -50,6 +50,7 @@ namespace TerritorialHQ
             builder.Services.AddScoped(typeof(ClanUserRelationService));
             builder.Services.AddScoped(typeof(NavigationEntryService));
             builder.Services.AddScoped(typeof(ContentPageService));
+            builder.Services.AddScoped(typeof(JournalArticleService));
 
             builder.Services.AddMemoryCache();
 

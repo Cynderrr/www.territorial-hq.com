@@ -22,6 +22,8 @@ namespace TerritorialHQ.Mapping
             CreateMap<TerritorialHQ.Areas.Administration.Pages.Navigation.EditModel, NavigationEntry>().ReverseMap();                  
             CreateMap<TerritorialHQ.Areas.Administration.Pages.ContentPages.CreateModel, ContentPage>().ReverseMap();                  
             CreateMap<TerritorialHQ.Areas.Administration.Pages.ContentPages.EditModel, ContentPage>().ReverseMap();                  
+            CreateMap<TerritorialHQ.Areas.Administration.Pages.Journal.CreateModel, JournalArticle>().ReverseMap();                  
+            CreateMap<TerritorialHQ.Areas.Administration.Pages.Journal.EditModel, JournalArticle>().ReverseMap();                  
         }
     }
 }

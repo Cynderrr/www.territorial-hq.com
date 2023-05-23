@@ -37,6 +37,7 @@ namespace TerritorialHQ.Areas.Administration.Pages.Clans
 
         [BindProperty]
         public string Id { get; set; }
+
         [BindProperty]
         [Required]
         [Display(Name = "Name")]

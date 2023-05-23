@@ -41,6 +41,11 @@ namespace TerritorialHQ.Pages.Installation.Initialize
                     Name = "Staff",
                     NormalizedName = "Staff"
                 });
+                await _roleManager.CreateAsync(new IdentityRole()
+                {
+                    Name = "Journalist",
+                    NormalizedName = "Journalist"
+                });
             }
 
             return Page();

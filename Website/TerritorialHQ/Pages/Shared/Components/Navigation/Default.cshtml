@@ -53,7 +53,7 @@
             }
         </li>
     }
-    @if (User.IsInRole("Administrator") || User.IsInRole("Staff"))
+    @if (User.IsInRole("Administrator") || User.IsInRole("Staff") || User.IsInRole("Journalist"))
     {
         <li>
             <a asp-area="Administration" asp-page="/Home/Index">Administration</a>
