@@ -20,6 +20,11 @@ namespace TerritorialHQ.Models
         [Display(Name = "Description")]
         public string? Description { get; set; }
 
+        [Display(Name = "Published")]
+        public bool IsPublished { get; set; }
+        [Display(Name = "In Review")]
+        public bool InReview { get; set; }
+
         public virtual List<ClanUserRelation> ClanUserRelations { get; set; }
     }
 }

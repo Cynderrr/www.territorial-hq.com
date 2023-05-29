@@ -39,7 +39,10 @@
                     @Html.DisplayNameFor(model => model.Clan[0].DiscordLink)
                 </th>
                 <th scope="col" class="">
-                    @Html.DisplayNameFor(model => model.Clan[0].Description)
+                    @Html.DisplayNameFor(model => model.Clan[0].IsPublished)
+                </th>
+                <th scope="col" class="">
+                    @Html.DisplayNameFor(model => model.Clan[0].InReview)
                 </th>
                 <th scope="col"></th>
             </tr>
@@ -73,12 +76,14 @@
                         @Html.DisplayFor(modelItem => item.DiscordLink)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Description)
+                        @Html.DisplayFor(modelItem => item.IsPublished)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.InReview)
                     </td>
                     <td style="width: 1%; white-space: nowrap">
                         <a class="btn-admin-secondary-sm" asp-page="./Details" asp-route-id="@item.Id">Details</a>
-                        <a class="btn-admin-secondary-sm" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
-                        @if (User.IsInRole("Administrator"))
+                        @if (User.IsInRole("Administrator") && item.ClanUserRelations.Count == 0)
                         {
                             <a class="btn-admin-danger-sm" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
                         }

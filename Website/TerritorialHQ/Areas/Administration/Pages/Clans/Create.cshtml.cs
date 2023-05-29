@@ -74,7 +74,7 @@ namespace TerritorialHQ.Areas.Administration.Pages.Clans
             _service.Add(item);
             await _service.SaveChangesAsync(User);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Details", new { id = item.Id });
         }
     }
 }

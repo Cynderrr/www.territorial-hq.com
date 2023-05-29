@@ -10,7 +10,7 @@ namespace TerritorialHQ.Services
         private readonly IConfiguration _configuration;
         private readonly DiscordClient _discordClient;
 
-        public DiscordBotService(IConfiguration configuration)
+        public DiscordBotService(IConfiguration configuration, IWebHostEnvironment env)
         {
             _configuration = configuration;
 
@@ -33,6 +33,26 @@ namespace TerritorialHQ.Services
         {
             var user = await _discordClient.GetUserAsync(id);
             return user;
+        }
+
+        public async Task SendReviewNotificationAsync(string userId, string clanId)
+        {
+            try
+            {
+                var defaultChannelId = ConfigurationBinder.GetValue<ulong>(_configuration, "DISCORD_DEFAULTCHANNELID");
+                var channel = await _discordClient.GetChannelAsync(defaultChannelId);
+
+#if (DEBUG)
+                var link = "https://localhost:32770/Administration/Clans/Details?id=" + clanId;
+#else
+                var link = "https://www.territorial-hq.com/Administration/Clans/Details?id=" + clanId;
+#endif
+                await _discordClient.SendMessageAsync(channel, "User " + userId + " has marked a clan listing for review: " + link);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
     }
 }
